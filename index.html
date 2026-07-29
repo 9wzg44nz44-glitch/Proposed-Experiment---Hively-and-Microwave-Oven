@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hively 8 GHz SLW Experiments → Microwave Oven Faraday-Cage Tests (2.45 GHz)</title>
+<style>
+:root {
+  --bg: #0f1419;
+  --card: #1a2332;
+  --accent: #3b82f6;
+  --accent2: #10b981;
+  --text: #e2e8f0;
+  --muted: #94a3b8;
+  --warn: #f59e0b;
+  --danger: #ef4444;
+  --border: #334155;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  padding: 0 1rem 4rem;
+}
+header {
+  background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 2.5rem 1rem;
+  margin: 0 -1rem 2rem;
+  text-align: center;
+}
+header h1 { font-size: 1.85rem; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+header p { color: var(--muted); max-width: 720px; margin: 0 auto; font-size: 1.05rem; }
+.container { max-width: 980px; margin: 0 auto; }
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.75rem;
+  margin-bottom: 1.75rem;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.25);
+}
+.card h2 {
+  font-size: 1.35rem;
+  color: var(--accent);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.card h3 { font-size: 1.1rem; color: var(--accent2); margin: 1.25rem 0 0.6rem; }
+p, li { margin-bottom: 0.7rem; }
+ul, ol { padding-left: 1.4rem; margin-bottom: 1rem; }
+.note {
+  background: rgba(59,130,246,0.08);
+  border-left: 4px solid var(--accent);
+  padding: 0.9rem 1.1rem;
+  border-radius: 0 8px 8px 0;
+  margin: 1.2rem 0;
+  font-size: 0.95rem;
+}
+.warn {
+  background: rgba(245,158,11,0.1);
+  border-left: 4px solid var(--warn);
+  padding: 0.9rem 1.1rem;
+  border-radius: 0 8px 8px 0;
+  margin: 1.2rem 0;
+}
+.danger {
+  background: rgba(239,68,68,0.1);
+  border-left: 4px solid var(--danger);
+  padding: 0.9rem 1.1rem;
+  border-radius: 0 8px 8px 0;
+  margin: 1.2rem 0;
+}
+.diagram {
+  background: #0b1120;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin: 1.25rem 0;
+  font-family: ui-monospace, 'Cascadia Code', monospace;
+  font-size: 0.82rem;
+  overflow-x: auto;
+  white-space: pre;
+  line-height: 1.35;
+  color: #a5b4fc;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.95rem;
+}
+th, td {
+  border: 1px solid var(--border);
+  padding: 0.55rem 0.8rem;
+  text-align: left;
+}
+th { background: #1e293b; color: var(--accent2); }
+tr:nth-child(even) { background: rgba(255,255,255,0.02); }
+.toc { columns: 2; column-gap: 2rem; }
+.toc a { text-decoration: none; display: block; margin-bottom: 0.35rem; color: #60a5fa; }
+@media (max-width: 600px) { .toc { columns: 1; } }
+footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+code { background: #1e293b; padding: 0.15em 0.4em; border-radius: 4px; font-size: 0.9em; }
+a { color: #60a5fa; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Hively 8 GHz SLW Foundation → Microwave Oven Faraday-Cage Tests</h1>
+  <p>Begin with the validated Hively monopole + skirt-balun transmitter and bifilar detector at ~8 GHz (IARD 2020 results). Then extend the same techniques to a consumer microwave-oven Faraday cage at 2.45 GHz, using both a scaled Hively transmitter and the oven magnetron itself, with full laboratory guidance.</p>
+</header>
+
+<div class="container">
+
+<nav class="card">
+  <h2>Contents</h2>
+  <div class="toc">
+    <a href="#overview">1. Overview – start with validated Hively results</a>
+    <a href="#transmitter">2. Hively transmitter hardware (monopole + skirt balun, ~8 GHz)</a>
+    <a href="#receiver">3. Hively-style bifilar receiving antenna</a>
+    <a href="#iard">4. Key IARD 2020 experimental results that motivate further tests</a>
+    <a href="#dualfreq">5. Dual-frequency strategy &amp; scaling to 2.45 GHz</a>
+    <a href="#oven">6. Extending the method to a microwave-oven Faraday cage</a>
+    <a href="#orient">7. Magnetron orientation &amp; expected directionality</a>
+    <a href="#mod">8. Modulating the oven’s 120 VAC supply</a>
+    <a href="#nz">9. Option: Nikolova–Zimmerman plasma-tube detector</a>
+    <a href="#circuit">10. Power-supply current modulation box</a>
+    <a href="#pll">11. Phase-locked-loop (PLL) detection</a>
+    <a href="#setup">12. Laboratory experiment layout</a>
+    <a href="#space">13. Bench size, equipment list &amp; consumables</a>
+    <a href="#underwater">14. Extension: underwater long-range SLW link between separate water tanks</a>
+    <a href="#likelihood">15. Likelihood assessment</a>
+  </div>
+</nav>
+
+<!-- 1 -->
+<section class="card" id="overview">
+  <h2>1. Overview – start with validated Hively results</h2>
+  <p>The strongest empirical foundation for scalar-longitudinal-wave (SLW) research is the set of controlled experiments reported by Hively (US 9,306,527 B1, Physics Essays 2019, IARD 2020). Those tests used a linear monopole with skirt balun at approximately 8 GHz, a bifilar detector, and solid-copper Faraday enclosures. They reported:</p>
+  <ul>
+    <li>SLW penetration of copper walls many skin-depths thick,</li>
+    <li>free-space attenuation consistent with 1/r²,</li>
+    <li>essentially isotropic radiation from the monopole,</li>
+    <li>power levels comparable to ordinary TEM waves, and</li>
+    <li>an irrotational (longitudinal) current as the driver.</li>
+  </ul>
+  <p>Classical electrodynamics cannot account for these observations. Therefore the recommended laboratory sequence is:</p>
+  <ol>
+    <li>First replicate or approximate the Hively 8 GHz configuration as a positive-control reference.</li>
+    <li>Scale the same antenna geometry to 2.45 GHz.</li>
+    <li>Only then apply the identical detector and Faraday-cloth techniques to a consumer microwave oven (itself a high-power 2.45 GHz source already enclosed in a Faraday cage).</li>
+  </ol>
+  <p>This ordering keeps the experiment grounded in published, instrumented results before moving to the more complex and higher-power oven environment.</p>
+</section>
+
+<!-- 2 -->
+<section class="card" id="transmitter">
+  <h2>2. Hively transmitter hardware (monopole + skirt balun, ~8 GHz)</h2>
+  <p>Hively’s patent (US 9,306,527 B1) and the IARD 2020 presentation describe two practical SLW radiators that generate an irrotational current (J<sup>IR</sup>) and therefore a non-zero scalar field C.</p>
+
+  <h3>2.1 Linear monopole with skirt balun (primary 8 GHz transmitter)</h3>
+  <ul>
+    <li>A linear monopole (center conductor of coax extended) operated as a monopole antenna.</li>
+    <li>A tubular second conductor (skirt) coaxially aligned with the monopole, forming an annular balun.</li>
+    <li>The balun cancels return current on the outer surface of the second conductor, forcing the feed current to be predominantly irrotational (longitudinal / gradient-driven).</li>
+    <li>This suppresses the usual displacement-current loop that would produce a conventional TEM wave.</li>
+    <li>In the IARD 2020 experiments the antenna was tuned near 8 GHz; return-loss and balun-effectiveness data are shown in the presentation.</li>
+  </ul>
+
+  <h3>2.2 Bifilar-coil transmitter (second patent embodiment)</h3>
+  <p>Two conductors wound side-by-side so that adjacent turns carry opposing currents. Net magnetic dipole cancels while the longitudinal electric response remains. Suitable for compact or lower-frequency sources.</p>
+</section>
+
+<!-- 3 -->
+<section class="card" id="receiver">
+  <h2>3. Hively-style bifilar receiving antenna</h2>
+  <p>The same bifilar geometry used as a transmitter can be used as a receiver. Adjacent turns again carry opposing currents, canceling the magnetic dipole and leaving sensitivity to a longitudinal E-field gradient.</p>
+
+  <h3>Recommended starting design (table-top scale)</h3>
+  <table>
+    <tr><th>Parameter</th><th>Value / recommendation</th></tr>
+    <tr><td>Wire type</td><td>Heavy-build enameled magnet wire (polyurethane or polyester-imide), Class 200</td></tr>
+    <tr><td>Gauge</td><td>18 AWG or 20 AWG (22 AWG acceptable for lower noise)</td></tr>
+    <tr><td>Winding style</td><td>True bifilar: two wires laid side-by-side and wound together; alternate connection so successive turns are opposite polarity</td></tr>
+    <tr><td>Number of turns</td><td>30–60 turns of the bifilar pair</td></tr>
+    <tr><td>Coil outer diameter</td><td>12–18 cm (pancake preferred) or 8–12 cm diameter × 4–6 cm long solenoid</td></tr>
+    <tr><td>Former</td><td>Non-magnetic, non-conductive (PVC, acrylic, 3-D-printed PLA)</td></tr>
+    <tr><td>Termination</td><td>Four distinct ends (A1/A2, B1/B2). Label clearly.</td></tr>
+  </table>
+
+  <h3>Four-end differential connection</h3>
+  <ul>
+    <li>Connect A1 to B2 (common node).</li>
+    <li>Take differential output between A2 and B1, or feed both wires into a high-CMRR instrumentation amplifier.</li>
+  </ul>
+  <p>This arrangement rejects ordinary TEM-induced circulating currents while remaining sensitive to a net longitudinal E-field gradient along the coil axis.</p>
+
+  <div class="diagram">Bifilar pancake (top view, simplified):
+
+     A1 ──────────────┐
+                      │  (outermost turn)
+     B1 ──────────┐   │
+                  │   │
+              ┌───┴───┴───┐
+              │  · · · ·  │  ← successive bifilar turns
+              │  · · · ·  │     alternating polarity
+              └───┬───┬───┘
+                  │   │
+     B2 ──────────┘   │
+                      │
+     A2 ──────────────┘
+
+Differential output:  (A2 – B1)   or   instrumentation-amp across the pair
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="card" id="iard">
+  <h2>4. Key IARD 2020 experimental results that motivate further tests</h2>
+  <ul>
+    <li><strong>Faraday-cage penetration:</strong> SLW propagated through solid-copper tubes and caps (wall thickness ≈ 1 mm, many classical skin depths at 8 GHz) while TEM is attenuated by tens of thousands of dB.</li>
+    <li><strong>Free-space attenuation:</strong> consistent with 1/r² within the measured range (r/λ ≤ 16).</li>
+    <li><strong>Radiation pattern:</strong> essentially isotropic from the linear monopole + skirt balun.</li>
+    <li><strong>Power level:</strong> comparable to ordinary TEM waves and detectable with standard laboratory instrumentation (network analyzer + TWT preamplifier).</li>
+    <li><strong>Driver:</strong> irrotational current confirmed.</li>
+  </ul>
+  <div class="note">
+    These results supply the strongest published empirical motivation for asking whether any analogous SLW component can exit a microwave-oven Faraday cage or penetrate a copper-cloth detector enclosure at 2.45 GHz.
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="card" id="dualfreq">
+  <h2>5. Dual-frequency strategy &amp; scaling to 2.45 GHz</h2>
+  <p>Two complementary sources are recommended after the 8 GHz reference is working:</p>
+  <ol>
+    <li><strong>Scaled Hively transmitter at 2.45 GHz</strong> – take the validated monopole + skirt-balun geometry and scale all linear dimensions by the factor 8 / 2.45 ≈ 3.27. This provides a clean, continuous-wave, frequency-matched SLW source at the oven frequency.</li>
+    <li><strong>Consumer microwave-oven magnetron at 2.45 GHz</strong> – high average power (700–1100 W), already inside its own Faraday cage. Modulation is applied via the 120 VAC line (see later section).</li>
+  </ol>
+  <p>Having both a controlled low-power 2.45 GHz Hively source and the high-power oven lets you separate geometry / frequency effects from the peculiarities of the magnetron and its cage.</p>
+</section>
+
+<!-- 6 -->
+<section class="card" id="oven">
+  <h2>6. Extending the method to a microwave-oven Faraday cage</h2>
+  <p>A conventional consumer microwave oven is a high-quality Faraday cage at 2.45 GHz. Regulatory limits (FDA / IEC) require leakage &lt; 5 mW/cm² at 5 cm; modern ovens are typically well below 1 mW/cm². Transverse electromagnetic energy is therefore retained to a very high degree.</p>
+  <p>If an SLW component is generated inside the magnetron interaction space or by the high-voltage circuitry, the same physics that allowed Hively’s 8 GHz SLW to exit solid copper may allow a residual longitudinal component to leave the oven cage. The experiment therefore asks:</p>
+  <ul>
+    <li>Can any modulated signature from the oven be detected by a Hively-style bifilar (or plasma) detector that is itself enclosed in copper cloth?</li>
+    <li>Does the signature survive the same controls (orientation, distance, source-off baselines) that were used at 8 GHz?</li>
+  </ul>
+  <div class="note">
+    <strong>Experimental stance:</strong> Mainstream electromagnetism does not recognize freely propagating SLWs of the type described in the fringe literature. The oven tests remain valuable as a controlled null test or as a search for anomalous coupling predicted by the EED / SLW models, especially in light of the copper-penetration results already reported at 8 GHz.
+  </div>
+</section>
+
+<!-- 7 -->
+<section class="card" id="orient">
+  <h2>7. Magnetron orientation &amp; expected directionality</h2>
+  <p>In the large majority of U.S. consumer ovens the control panel is on the <strong>right</strong> when facing the door. The magnetron sits in the electronics bay behind that panel.</p>
+  <ul>
+    <li>Body (finned anode + ceramic magnets) is vertical or slightly tilted.</li>
+    <li>Antenna probe points upward or sideways into a short waveguide that launches into the top or right wall of the cavity.</li>
+    <li>Filament / HV connections are at the bottom of the magnetron.</li>
+    <li>Cooling exhaust is usually on the right side or rear.</li>
+  </ul>
+  <div class="diagram">Facing the oven door (front view):
+
+┌─────────────────────────────────────┐
+│  DOOR  (mesh screen)                │  CONTROL
+│                                     │  PANEL /
+│         COOKING CAVITY              │  KEYPAD
+│                                     │  ┌─────┐
+│                                     │  │     │ ← magnetron + HV
+│                                     │  │ MAG │    transformer
+│                                     │  │     │    behind panel
+└─────────────────────────────────────┘  └─────┘
+          (hinges on left)                 right side
+  </div>
+  <p>Strongest external fields associated with the magnetron itself therefore appear on the <strong>right-hand side and rear</strong>. Scan first at 30–100 cm on those faces, then the door plane. Rotate the detector 90° as a control.</p>
+</section>
+
+<!-- 8 -->
+<section class="card" id="mod">
+  <h2>8. Modulating the oven’s 120 VAC supply</h2>
+  <p>The magnetron produces output only while high voltage is present. Imposing low-frequency amplitude or phase modulation on the 120 VAC line modulates the instantaneous power and therefore the amplitude of both the retained TEM field and any hypothesized escaping SLW. The common modulation envelope enables lock-in / PLL detection.</p>
+  <div class="warn">
+    Simple series TRIAC dimmers work but inject harmonics that can upset the oven’s own electronics. Prefer a cleaner series current-modulator stage or a programmable AC source rated ≥15–20 A continuous with an external modulation input.
+  </div>
+</section>
+
+<!-- 9 -->
+<section class="card" id="nz">
+  <h2>9. Option – Nikolova–Zimmerman plasma-tube detector</h2>
+  <p>A biased plasma column (fluorescent or neon tube) whose bias current is parallel to the expected longitudinal direction. A longitudinal E or A wave modulates plasma conductivity or electron drift. Orient the long axis toward the source and enclose the entire detector inside the copper-cloth Faraday cage.</p>
+</section>
+
+<!-- 10 -->
+<section class="card" id="circuit">
+  <h2>10. Power-supply current modulation box</h2>
+  <p>The microwave oven plugs into this box; the box plugs into a standard 15 A or 20 A wall receptacle. A modulation input (BNC) accepts an external low-frequency signal.</p>
+  <ol>
+    <li>Series TRIAC / SCR phase-control (simplest) or series IGBT / MOSFET AC switch (cleaner).</li>
+    <li>Mandatory protection: 20 A slow-blow fuse, MOV, thermal cut-out, GFCI upstream if possible.</li>
+    <li>Test points: isolated current sense, voltage monitor, modulation-input BNC.</li>
+  </ol>
+  <div class="danger">
+    <strong>Safety critical:</strong> This circuit carries lethal current and voltage. Use a grounded metal enclosure, interlocks, and qualified review before first power-up. Never operate the oven with the door open or damaged seals. Always use a water load (250–500 mL).
+  </div>
+  <div class="diagram">Simplified block:
+
+Wall 120 VAC ──► Fuse ──► Series Power Device (TRIAC/IGBT) ──► Outlet (oven)
+                              ▲
+                              │ gate / control
+                         Opto-isolator
+                              ▲
+                         Modulation amp ←── BNC (0–5 V or ±10 V mod signal)
+                         + current-sense feedback
+  </div>
+</section>
+
+<!-- 11 -->
+<section class="card" id="pll">
+  <h2>11. Phase-locked-loop (PLL) / lock-in detection</h2>
+  <p>Drive the modulation box (or the Hively source amplitude) with a clean reference tone (e.g. 400 Hz, 1 kHz, or 17 Hz). Feed the detector output into a lock-in amplifier or software PLL referenced to the same tone. This extracts the coherent component and rejects broadband noise and 60/120 Hz artifacts by tens of dB.</p>
+</section>
+
+<!-- 12 -->
+<section class="card" id="setup">
+  <h2>12. Laboratory experiment layout</h2>
+  <ul>
+    <li><strong>Phase 1 – Hively 8 GHz reference:</strong> set up the monopole + skirt-balun transmitter, bifilar (or plasma) detector inside copper cloth, and verify Faraday-cage penetration / 1/r² / pattern results as a positive control.</li>
+    <li><strong>Phase 2 – Scaled 2.45 GHz Hively transmitter:</strong> replace the source with the frequency-scaled geometry; keep the identical detector and enclosure.</li>
+    <li><strong>Phase 3 – Microwave oven:</strong> place the oven on a non-metallic stand. Do <em>not</em> add an extra Faraday cage around the oven. Orient the detector toward the right-hand / control-panel face (and then rear and door). Apply line modulation and record lock-in output versus distance, orientation, and modulation depth. Include full source-off baselines for every configuration.</li>
+  </ul>
+</section>
+
+<!-- 13 -->
+<section class="card" id="space">
+  <h2>13. Bench size, equipment list &amp; consumables for the lab manager</h2>
+
+  <h3>Space allocation (minimum)</h3>
+  <div class="diagram">Top-view floor plan (dimensions in cm)
+
+        250 cm (≈ 8 ft)
+┌──────────────────────────────────────────────┐
+│                                              │
+│  [Hively 8 GHz TX]   [2.45 GHz scaled TX]    │  Depth ≈ 180–200 cm
+│  + detector enclosure                        │
+│                                              │
+│  [Microwave oven + modulation box]           │
+│  clear zone for detector positioning         │
+│                                              │
+│  Instrument rack / network analyzer /        │
+│  lock-in / oscilloscope                      │
+└──────────────────────────────────────────────┘
+
+Primary workbench: 180–200 cm W × 75 cm D × 90 cm H
+Secondary cart for instruments: 120 × 60 cm
+Clear floor space for detector positioning: ≥ 1.5 m
+  </div>
+
+  <h3>Core hardware &amp; consumables</h3>
+  <table>
+    <tr><th>Item</th><th>Qty / notes</th></tr>
+    <tr><td><strong>Hively monopole + skirt-balun transmitter (~8 GHz)</strong></td><td>1 (replicate IARD 2020 geometry)</td></tr>
+    <tr><td><strong>Scaled Hively monopole + skirt-balun (2.45 GHz)</strong></td><td>1 (linear scale ≈ 3.27)</td></tr>
+    <tr><td>Bifilar-coil transmitter / receiver</td><td>1–2</td></tr>
+    <tr><td>Consumer microwave oven (700–1100 W)</td><td>1 (known-good door seals)</td></tr>
+    <tr><td>120 VAC modulation box (≥20 A continuous)</td><td>1</td></tr>
+    <tr><td>Network analyzer or signal generator (2–10 GHz)</td><td>1 (E5071C class or modern equivalent)</td></tr>
+    <tr><td>TWT or solid-state preamp (6–18 GHz, ≥40–50 W preferred)</td><td>1</td></tr>
+    <tr><td>Directional couplers, attenuators, calibration kit</td><td>as required</td></tr>
+    <tr><td>Copper cloth / Faraday fabric (≥30 dB @ 2.4 GHz)</td><td>2–3 m²</td></tr>
+    <tr><td>Solid-copper test tubes / caps (≈1 mm wall)</td><td>several (replication of Hively penetration tests)</td></tr>
+    <tr><td>Magnet wire 18–22 AWG enameled</td><td>200–300 m</td></tr>
+    <tr><td>Non-conductive coil formers</td><td>2–3 sizes</td></tr>
+    <tr><td>Instrumentation / differential preamp</td><td>1</td></tr>
+    <tr><td>Lock-in amplifier or software PLL + digitizer</td><td>1</td></tr>
+    <tr><td>Function generator, oscilloscope (≥100 MHz)</td><td>1 each</td></tr>
+    <tr><td>Microwave leakage meter (2.45 GHz calibrated)</td><td>1 (safety essential)</td></tr>
+    <tr><td>Current probe (≥20 A), fluorescent/neon tubes + bias</td><td>as needed</td></tr>
+    <tr><td>Coax (RG-405 or low-loss), adapters, feed-through filters</td><td>as needed</td></tr>
+    <tr><td>Rotary / linear positioners (optional)</td><td>1 set</td></tr>
+    <tr><td>Safety kit (GFCI, fuses, labels, extinguisher)</td><td>standard</td></tr>
+  </table>
+</section>
+
+<!-- 14 -->
+
+<section class="card" id="underwater">
+  <h2>14. Extension: underwater long-range SLW link between separate water tanks</h2>
+  <p>Once the bench-top dual-frequency experiments are working, the same hardware can be extended to a far more stringent isolation test that essentially eliminates ordinary TEM propagation as a possible explanation for any successful data link.</p>
+
+  <h3>14.1 Concept</h3>
+  <ul>
+    <li><strong>Transmitter side:</strong> The Hively monopole + skirt-balun (8 GHz or scaled 2.45 GHz) and/or the microwave oven are placed inside a sealed, air-tight, pressure-tolerant container. The container is submerged in a large water tank located in Building A of the laboratory compound.</li>
+    <li><strong>Receiver side:</strong> The bifilar coil or U-shaped plasma-tube detector (plus preamp and any local recording electronics) is placed inside a second sealed, air-tight container and submerged in a different large water tank located in Building B, physically distant from Building A.</li>
+    <li>The two tanks have no metallic or optical line-of-sight path. The only medium connecting them is the intervening earth, air, and the water itself.</li>
+  </ul>
+
+  <h3>14.2 Why TEM cannot account for a successful link</h3>
+  <ul>
+    <li>At both 2.45 GHz and 8 GHz, liquid water (fresh or saline) is an extremely lossy medium for transverse electromagnetic waves. Classical skin depth is only a few millimeters to a few centimeters; attenuation reaches tens to hundreds of dB per meter.</li>
+    <li>Submerging the transmitter inside a water-filled tank therefore already attenuates any residual TEM leakage by an enormous factor before the wave even leaves the tank.</li>
+    <li>The receiver is likewise surrounded by water, adding a second independent attenuation barrier.</li>
+    <li>The physical separation between buildings (tens to hundreds of meters of earth, walls, and air) further guarantees that no conventional microwave path exists.</li>
+    <li>Consequently, if a modulated signal is still recovered at the distant underwater detector, ordinary TEM propagation is ruled out to a very high degree of confidence. Only a mechanism that is not subject to the same skin-effect / conductivity losses (the hypothesized SLW / longitudinal / scalar channel) remains as a viable explanation.</li>
+  </ul>
+
+  <h3>14.3 Practical implementation notes</h3>
+  <ul>
+    <li><strong>Containers:</strong> Waterproof, pressure-rated enclosures (IP68 or better) with penetrations only for power and, if needed, a sealed coaxial or fiber feed. The interior remains dry air or dry nitrogen so that the antennas and electronics operate in their normal dielectric environment.</li>
+    <li><strong>Water tanks:</strong> Large land-based tanks (thousands of liters) already present or easily installed on the compound. Fresh water is sufficient; saline water increases TEM attenuation still further.</li>
+    <li><strong>Modulation / data link:</strong> Continue to use the same low-frequency modulation (or a simple on-off keyed tone) that was employed on the bench. Lock-in or digital correlation at the receiver extracts the signal even if the absolute power is low.</li>
+    <li><strong>Controls:</strong> (a) transmitter powered but modulation off; (b) transmitter completely powered down; (c) receiver container lifted out of the water while the transmitter remains submerged; (d) frequency switched between 8 GHz and 2.45 GHz. All must be recorded.</li>
+    <li><strong>Safety:</strong> Mains-powered microwave ovens require extreme care when placed inside a sealed container that will be submerged—ground-fault protection, residual-current devices, and a qualified electrical safety review are mandatory. Battery-powered or low-voltage Hively transmitters are far safer for the underwater phase.</li>
+  </ul>
+
+  <div class="diagram">Conceptual layout (not to scale)
+
+  Building A                          Building B
+  ┌─────────────────┐                 ┌─────────────────┐
+  │  Large water    │                 │  Large water    │
+  │  tank           │                 │  tank           │
+  │  ┌───────────┐  │   intervening   │  ┌───────────┐  │
+  │  │ airtight  │  │   earth / air   │  │ airtight  │  │
+  │  │ container │  │   / structures  │  │ container │  │
+  │  │ TX (Hively│  │                 │  │ Detector  │  │
+  │  │ or oven)  │  │                 │  │ (bifilar  │  │
+  │  └───────────┘  │                 │  │ or plasma)│  │
+  │                 │                 │  └───────────┘  │
+  └─────────────────┘                 └─────────────────┘
+
+  TEM path is blocked by water attenuation + physical separation.
+  Any recovered modulated signal must therefore travel by a non-TEM channel.
+  </div>
+
+  <div class="note">
+    This configuration is a direct, large-scale extension of the copper-Faraday-enclosure penetration tests already reported by Hively at 8 GHz. Water provides an even more severe TEM barrier while remaining transparent (in the EED / SLW hypothesis) to the longitudinal / scalar component.
+  </div>
+</section>
+
+<section class="card" id="likelihood">
+  <h2>15. Likelihood assessment</h2>
+  <p><strong>For the Hively 8 GHz configuration:</strong> the published IARD 2020 results already report positive detections under controlled conditions (copper penetration, 1/r², isotropic pattern, irrotational drive). Replicating those results is therefore the highest-probability first step and supplies a positive-control reference.</p>
+  <p><strong>For the microwave-oven Faraday cage at 2.45 GHz:</strong> probability of a clear positive SLW detection under mainstream physics remains low—the oven is an excellent TEM cage. However, the same copper-penetration physics reported at 8 GHz supplies a concrete empirical reason to perform the test. The dual-source approach (scaled Hively transmitter + modulated oven) lets any anomalous signature be compared against a known geometry at the same frequency.</p>
+  <p><strong>For the underwater inter-building link:</strong> the combination of water attenuation (skin depth of only millimeters to centimeters at both 2.45 GHz and 8 GHz) and physical separation between buildings makes ordinary TEM propagation essentially impossible. A successful modulated data link under those conditions would be extremely difficult to explain by any classical electromagnetic mechanism and would constitute the strongest possible evidence for a non-TEM channel.</p>
+  <p>Any candidate signal, whether on the bench or underwater, must survive rigorous controls: Faraday / water enclosure of the detector, orientation dependence, distance fall-off, frequency comparison (8 GHz vs 2.45 GHz), and full source-off baselines.</p>
+  <div class="note">
+    Proceed with full safety protocols. Document every control run. Keep the Hively IARD 2020 presentation and the underlying Physics Essays / patent papers as primary laboratory references. Share raw data regardless of outcome.
+  </div>
+</section>
+
+<footer>
+  <p><strong>Created by Dan Britton</strong>, with assistance by Grok (xAI).<br>
+  Document prepared for laboratory planning – July 2026.</p>
+  <p>Primary references: Hively US 9,306,527 B1; Hively &amp; Loebl, Physics Essays 32, 1 (2019); Hively IARD 2020 presentation (Extended Electrodynamics and SHP Theory); Zimmerman / Nikolova plasma-antenna literature; FDA microwave oven performance standards.</p>
+  <p style="margin-top:0.75rem;font-size:0.8rem;">Narrative order: validated Hively 8 GHz results first, then extension to a consumer microwave-oven Faraday cage at 2.45 GHz (scaled Hively transmitter + modulated magnetron), including the underwater inter-building water-tank extension. This page incorporates the published copper-penetration, 1/r², isotropic-pattern and irrotational-drive results. It does not constitute endorsement of non-mainstream wave theories beyond the data already reported. Always prioritize electrical and RF safety.</p>
+</footer>
+
+</div>
+</body>
+</html>
